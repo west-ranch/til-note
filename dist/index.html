@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>til-note</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyD495Xzd07oQA2TIFHpmYcNIb5szLO36PU",
+      authDomain: "til-note.firebaseapp.com",
+      databaseURL: "https://til-note.firebaseio.com",
+      projectId: "til-note",
+      storageBucket: "til-note.appspot.com",
+      messagingSenderId: "385860664035",
+      appId: "1:385860664035:web:66818fc296195b8ac063d6",
+      measurementId: "G-7EY6M7Z382"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+  <script src="./build.js"></script>
+</body>
+
+</html>

@@ -1,7 +1,10 @@
 <template>
   <div id="top">
-    <Home v-if="!isLogin"></Home>
-    <Editor v-if="isLogin" :user="userData"></Editor>
+    <div v-if="isLoading" class="loading">
+      <bounce-loader :color="color" :size="size"></bounce-loader>
+    </div>
+    <Home v-if="!isLogin && !isLoading"></Home>
+    <Editor v-if="isLogin && !isLoading" :user="userData"></Editor>
     <router-link :to="{ name: 'terms' }">利用規約</router-link>
   </div>
 </template>
@@ -9,13 +12,17 @@
 <script>
 import Home from "../components/Home.vue";
 import Editor from "../components/Editor.vue";
+import BounceLoader from "vue-spinner/src/BounceLoader.vue";
 
 export default {
   name: "top",
   data() {
     return {
       isLogin: false,
-      userData: null
+      userData: null,
+      isLoading: true,
+      color: "#5dc596",
+      size: "400px"
     };
   },
   created: function() {
@@ -28,11 +35,13 @@ export default {
         this.isLogin = false;
         this.userData = null;
       }
+      this.isLoading = false;
     });
   },
   components: {
     Home: Home,
-    Editor: Editor
+    Editor: Editor,
+    BounceLoader
   }
 };
 </script>
@@ -46,19 +55,13 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-h1,
-h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
 a {
   color: #42b983;
+}
+.loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin: -200px 0 0 -200px;
 }
 </style>
