@@ -3,6 +3,7 @@
     <div v-if="isLoading" class="loading">
       <bounce-loader :color="color" :size="size"></bounce-loader>
     </div>
+    <GlobalNav :user="userData"></GlobalNav>
     <Home v-if="!isLogin && !isLoading"></Home>
     <Editor v-if="isLogin && !isLoading" :user="userData"></Editor>
     <router-link :to="{ name: 'terms' }">利用規約</router-link>
@@ -12,6 +13,7 @@
 <script>
 import Home from "../components/Home.vue";
 import Editor from "../components/Editor.vue";
+import GlobalNav from "../components/GlobalNav.vue";
 import BounceLoader from "vue-spinner/src/BounceLoader.vue";
 
 export default {
@@ -41,6 +43,7 @@ export default {
   components: {
     Home: Home,
     Editor: Editor,
+    GlobalNav: GlobalNav,
     BounceLoader
   }
 };
