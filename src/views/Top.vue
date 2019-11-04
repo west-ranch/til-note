@@ -6,7 +6,6 @@
     <GlobalNav :user="userData"></GlobalNav>
     <Home v-if="!isLogin && !isLoading"></Home>
     <Editor v-if="isLogin && !isLoading" :user="userData"></Editor>
-    <router-link :to="{ name: 'terms' }">利用規約</router-link>
   </div>
 </template>
 
@@ -23,7 +22,7 @@ export default {
       isLogin: false,
       userData: null,
       isLoading: true,
-      color: "#5dc596",
+      color: "#29a972",
       size: "400px"
     };
   },
@@ -49,18 +48,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
-#top {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-a {
-  color: #42b983;
-}
+<style lang="scss" scoped>
 .loading {
   position: fixed;
   top: 50%;

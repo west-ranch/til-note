@@ -1,24 +1,24 @@
 <template>
   <div class="editor">
-    <h1>エディター画面</h1>
-    <span>{{ user.displayName }}</span>
-    <button @click="logout">ログアウト</button>
-    <div class="editorWrapper">
-      <div class="memoListWrapper">
-        <div
-          class="memoList"
-          v-for="(memo, index) in memos"
-          :key="index"
-          @click="selectMemo(index)"
-          :data-selected="index == selectedIndex"
-        >
-          <p class="memoTitle">{{ displayTitle(memo.markdown) }}</p>
-        </div>
+    <div class="memoListWrapper">
+      <div class="memoBtns">
         <button class="addMemoBtn" @click="addMemo">メモの追加</button>
-        <button class="deleteMemoBtn" v-if="memos.length > 1" @click="deleteMemo">選択中のメモの削除</button>
         <button class="saveMemosBtn" @click="saveMemos">メモの保存</button>
+        <button class="deleteMemoBtn" v-if="memos.length > 1" @click="deleteMemo">選択中のメモの削除</button>
       </div>
-      <textarea class="markdown" v-model="memos[selectedIndex].markdown"></textarea>
+      <div
+        class="memoList"
+        v-for="(memo, index) in memos"
+        :key="index"
+        @click="selectMemo(index)"
+        :data-selected="index == selectedIndex"
+      >
+        <p class="memoTitle">{{ displayTitle(memo.markdown) }}</p>
+      </div>
+    </div>
+    <textarea class="markdown" v-model="memos[selectedIndex].markdown" ref="markdown"></textarea>
+    <div class="previewWrapper" ref="preview">
+      <p class="previewTitle">Preview Area</p>
       <div class="preview markdown-body" v-html="preview()"></div>
     </div>
   </div>
@@ -41,12 +41,13 @@ export default {
   },
   created: function() {
     firebase
-      .database()
-      .ref("memos/" + this.user.uid)
-      .once("value")
-      .then(result => {
-        if (result.val()) {
-          this.memos = result.val();
+      .firestore()
+      .collection("memos")
+      .doc(this.user.uid)
+      .get()
+      .then(doc => {
+        if (doc.exists && doc.data().memos) {
+          this.memos = doc.data().memos;
         }
       });
   },
@@ -72,9 +73,10 @@ export default {
     },
     saveMemos: function() {
       firebase
-        .database()
-        .ref("memos/" + this.user.uid)
-        .set(this.memos);
+        .firestore()
+        .collection("memos")
+        .doc(this.user.uid)
+        .set({ memos: this.memos });
     },
     deleteMemo: function() {
       this.memos.splice(this.selectedIndex, 1);
@@ -96,12 +98,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.editorWrapper {
-  display: flex;
+.editor {
+  height: 100%;
 }
 .memoListWrapper {
   width: 20%;
-  border-top: 1px solid #000;
+  padding-bottom: 20px;
 }
 .memoList {
   padding: 10px;
@@ -128,11 +130,34 @@ export default {
   margin: 10px;
 }
 .markdown {
-  width: 40%;
-  height: 500px;
+  border: none;
+  border-right: #ccc 1px solid;
+  border-left: #ccc 1px solid;
+  background-color: #eee;
+  box-shadow: inset 0 0 5px 0 rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 50%;
+  resize: none;
+}
+.previewWrapper {
+  text-align: left;
+  width: 30%;
+}
+.previewTitle {
+  color: #888;
+  padding: 10px;
+  font-size: 14px;
+  border-bottom: #ddd 1px dotted;
 }
 .preview {
-  width: 40%;
-  text-align: left;
+  padding: 10px;
+}
+.markdown,
+.memoListWrapper,
+.previewWrapper {
+  overflow: scroll;
+  float: left;
+  height: 100%;
+  box-sizing: border-box;
 }
 </style>
