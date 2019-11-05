@@ -19,7 +19,8 @@
     <textarea class="markdown" v-model="memos[selectedIndex].markdown" ref="markdown"></textarea>
     <div class="previewWrapper" ref="preview">
       <p class="previewTitle">Preview Area</p>
-      <div class="preview markdown-body" v-html="preview()"></div>
+      <button @click="toggle">toggle</button>
+      <div class="preview markdown-body" v-if="showPreview" v-html="preview()"></div>
     </div>
   </div>
 </template>
@@ -36,7 +37,8 @@ export default {
           markdown: ""
         }
       ],
-      selectedIndex: 0
+      selectedIndex: 0,
+      showPreview: true
     };
   },
   created: function() {
@@ -63,9 +65,6 @@ export default {
     document.onkeydown = null;
   },
   methods: {
-    logout: function() {
-      firebase.auth().signOut();
-    },
     addMemo: function() {
       this.memos.push({
         markdown: "無題のメモ"
@@ -94,6 +93,9 @@ export default {
     },
     displayTitle: function(text) {
       return text.split(/\n/)[0];
+    },
+    toggle: function() {
+      this.showPreview = !this.showPreview;
     }
   }
 };
