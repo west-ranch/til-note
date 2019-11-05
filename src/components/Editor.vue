@@ -79,9 +79,11 @@ export default {
         .set({ memos: this.memos });
     },
     deleteMemo: function() {
-      this.memos.splice(this.selectedIndex, 1);
-      if (this.selectedIndex > 0) {
-        this.selectedIndex--;
+      if (confirm("本当に削除しますか？")) {
+        this.memos.splice(this.selectedIndex, 1);
+        if (this.selectedIndex > 0) {
+          this.selectedIndex--;
+        }
       }
     },
     selectMemo: function(index) {
